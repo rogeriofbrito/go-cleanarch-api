@@ -1,11 +1,20 @@
 package controller
 
 import (
+	"encoding/json"
+
 	"github.com/rogeriofbrito/go-cleanarch-api/src/core/domain"
 	"github.com/rogeriofbrito/go-cleanarch-api/src/core/usecase"
 )
 
-type Book struct {
+type Request struct {
+	pathVariables map[string]string
+	params        map[string]string
+	headers       map[string]string
+	body          []byte
+}
+
+type BookModel struct {
 	Id    int    `json:"id"`
 	Title string `json:"title"`
 	Pages int    `json:"pages"`
@@ -15,21 +24,28 @@ type Controller struct {
 	Cb usecase.CreateBookUseCase
 }
 
-func (bc Controller) CreateBookUseCase(params map[string]string, headers map[string]string, body Book) Book {
-	book := domain.BookDomain{
-		Id:    body.Id,
-		Title: body.Title,
-		Pages: body.Pages,
+func (bc Controller) CreateBookUseCase(request Request) (BookModel, error) {
+	bm := new(BookModel)
+	err := json.Unmarshal(request.body, &bm)
+	if err != nil {
+		return BookModel{}, err
 	}
-	book = bc.Cb.Execute(book)
 
-	return Book{
-		Id:    book.Id,
-		Title: book.Title,
-		Pages: book.Pages,
+	bd := domain.BookDomain{
+		Id:    bm.Id,
+		Title: bm.Title,
+		Pages: bm.Pages,
 	}
+
+	bd = bc.Cb.Execute(bd)
+
+	return BookModel{
+		Id:    bd.Id,
+		Title: bd.Title,
+		Pages: bd.Pages,
+	}, nil
 }
 
-func (bc Controller) GetBook(params map[string]string, headers map[string]string) Book {
-	return Book{}
+func (bc Controller) GetBook(request Request) (BookModel, error) {
+	return BookModel{}, nil
 }

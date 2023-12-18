@@ -11,21 +11,37 @@ type FiberControllerAdapter struct {
 
 // adapts to CreateBookUseCase controller function
 func (fc FiberControllerAdapter) CreateBookUseCase(c *fiber.Ctx) error {
-	book := new(Book)
-	if err := c.BodyParser(book); err != nil {
+	request := Request{
+		pathVariables: nil, // TODO: parse path variables
+		params:        nil, // TODO: parse params
+		headers:       nil, // TODO: parse headers
+		body:          c.Request().Body(),
+	}
+
+	b, err := fc.Controller.CreateBookUseCase(request)
+	if err != nil {
 		return err
 	}
-	var params map[string]string  // TODO: parse params
-	var headers map[string]string // TODO: parse headers
-	c.JSON(fc.Controller.CreateBookUseCase(params, headers, *book))
+
+	c.JSON(b)
 	return nil
 }
 
 // adapts to GetBook controller function
 func (fc FiberControllerAdapter) GetBook(c *fiber.Ctx) error {
-	var params map[string]string  // TODO: parse params
-	var headers map[string]string // TODO: parse headers
-	c.JSON(fc.Controller.GetBook(params, headers))
+	request := Request{
+		pathVariables: nil, // TODO: parse path variables
+		params:        nil, // TODO: parse params
+		headers:       nil, // TODO: parse headers
+		body:          c.Request().Body(),
+	}
+
+	b, err := fc.Controller.GetBook(request)
+	if err != nil {
+		return err
+	}
+
+	c.JSON(b)
 	return nil
 }
 

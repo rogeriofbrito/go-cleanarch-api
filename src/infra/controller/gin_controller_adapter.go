@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"io/ioutil"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -13,24 +14,38 @@ type GinControllerAdapter struct {
 
 // adapts to CreateBookUseCase controller function
 func (gc GinControllerAdapter) CreateBookUseCase(c *gin.Context) {
-	book := new(Book)             // TODO: parse body
-	var params map[string]string  // TODO: parse params
-	var headers map[string]string // TODO: parse headers
-
-	if err := c.BindJSON(&book); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+	body, _ := ioutil.ReadAll(c.Request.Body)
+	request := Request{
+		pathVariables: nil, // TODO: parse path variables
+		params:        nil, // TODO: parse params
+		headers:       nil, // TODO: parse headers
+		body:          body,
 	}
 
-	*book = gc.Controller.CreateBookUseCase(params, headers, *book)
-	c.JSON(http.StatusOK, book)
+	b, err := gc.Controller.CreateBookUseCase(request)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, "")
+	}
+
+	c.JSON(http.StatusOK, b)
 }
 
 // adapts to GetBook controller function
 func (gc GinControllerAdapter) GetBook(c *gin.Context) error {
-	var params map[string]string  // TODO: parse params
-	var headers map[string]string // TODO: parse headers
-	c.JSON(http.StatusOK, gc.Controller.GetBook(params, headers))
+	body, _ := ioutil.ReadAll(c.Request.Body)
+	request := Request{
+		pathVariables: nil, // TODO: parse path variables
+		params:        nil, // TODO: parse params
+		headers:       nil, // TODO: parse headers
+		body:          body,
+	}
+
+	b, err := gc.Controller.GetBook(request)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, "")
+	}
+
+	c.JSON(http.StatusOK, b)
 	return nil
 }
 
