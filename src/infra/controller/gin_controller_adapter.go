@@ -49,7 +49,7 @@ func (gc GinControllerAdapter) GetBook(c *gin.Context) error {
 	return nil
 }
 
-func (gc GinControllerAdapter) Start() {
+func (gc GinControllerAdapter) Start() error {
 	gc.Gin.GET("/book", func(c *gin.Context) {
 		gc.GetBook(c)
 	})
@@ -58,5 +58,5 @@ func (gc GinControllerAdapter) Start() {
 		gc.CreateBookUseCase(c)
 	})
 
-	gc.Gin.Run(":3000")
+	return gc.Gin.Run(":3000")
 }

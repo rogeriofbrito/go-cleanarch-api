@@ -13,26 +13,28 @@ type PostgresBookRepository struct {
 	Env env.IEnv
 }
 
-func (pbr PostgresBookRepository) Save(book domain.BookDomain) domain.BookDomain {
+func (pbr PostgresBookRepository) Save(book domain.BookDomain) (domain.BookDomain, error) {
 	conn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
 		pbr.Env.GetPostgresBookHost(),
 		pbr.Env.GetPostgresBookPort(),
 		pbr.Env.GetPostgresBookUser(),
 		pbr.Env.GetPostgresBookPassword(),
 		pbr.Env.GetPostgresBookDatabase())
+
 	db, err := sql.Open("postgres", conn)
 	if err != nil {
-		panic(err)
+		return domain.BookDomain{}, err
 	}
+
 	err = db.Ping()
 	if err != nil {
-		panic(err)
+		return domain.BookDomain{}, err
 	}
 
 	_, err = db.Exec("INSERT INTO book VALUES($1, $2, $3)", book.Id, book.Title, book.Pages)
 
 	if err != nil {
-		panic(err)
+		return domain.BookDomain{}, err
 	}
 
 	defer db.Close()
@@ -40,5 +42,5 @@ func (pbr PostgresBookRepository) Save(book domain.BookDomain) domain.BookDomain
 		Id:    book.Id,
 		Title: book.Title,
 		Pages: book.Pages,
-	}
+	}, nil
 }

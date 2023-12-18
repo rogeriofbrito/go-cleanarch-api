@@ -45,7 +45,7 @@ func (fc FiberControllerAdapter) GetBook(c *fiber.Ctx) error {
 	return nil
 }
 
-func (fc FiberControllerAdapter) Start() {
+func (fc FiberControllerAdapter) Start() error {
 	fc.App.Get("/book", func(c *fiber.Ctx) error {
 		return fc.GetBook(c)
 	})
@@ -54,5 +54,5 @@ func (fc FiberControllerAdapter) Start() {
 		return fc.CreateBookUseCase(c)
 	})
 
-	fc.App.Listen(":3000")
+	return fc.App.Listen(":3000")
 }

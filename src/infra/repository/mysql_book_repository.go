@@ -13,7 +13,7 @@ type MySqlBookRepository struct {
 	Env env.IEnv
 }
 
-func (msbr MySqlBookRepository) Save(book domain.BookDomain) domain.BookDomain {
+func (msbr MySqlBookRepository) Save(book domain.BookDomain) (domain.BookDomain, error) {
 	conn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s",
 		msbr.Env.GetMySqlBookUser(),
 		msbr.Env.GetMySqlBookPassword(),
@@ -21,19 +21,20 @@ func (msbr MySqlBookRepository) Save(book domain.BookDomain) domain.BookDomain {
 		msbr.Env.GetMySqlBookPort(),
 		msbr.Env.GetMySqlBookDatabase(),
 	)
+
 	db, err := sql.Open("mysql", conn)
 	if err != nil {
-		panic(err)
+		return domain.BookDomain{}, err
 	}
+
 	err = db.Ping()
 	if err != nil {
-		panic(err)
+		return domain.BookDomain{}, err
 	}
 
 	_, err = db.Query("INSERT INTO book VALUES(?, ?, ?)", book.Id, book.Title, book.Pages)
-
 	if err != nil {
-		panic(err)
+		return domain.BookDomain{}, err
 	}
 
 	defer db.Close()
@@ -41,5 +42,5 @@ func (msbr MySqlBookRepository) Save(book domain.BookDomain) domain.BookDomain {
 		Id:    book.Id,
 		Title: book.Title,
 		Pages: book.Pages,
-	}
+	}, nil
 }

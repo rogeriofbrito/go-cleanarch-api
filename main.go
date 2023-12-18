@@ -6,5 +6,7 @@ import (
 
 func main() {
 	ca := factory.NewControllerAdapter()
-	ca.Start()
+	if err := ca.Start(); err != nil {
+		panic(err)
+	}
 }

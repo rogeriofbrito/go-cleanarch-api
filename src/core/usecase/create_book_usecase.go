@@ -9,6 +9,6 @@ type CreateBookUseCase struct {
 	Br external.IBookRepository
 }
 
-func (cb CreateBookUseCase) Execute(book domain.BookDomain) domain.BookDomain {
+func (cb CreateBookUseCase) Execute(book domain.BookDomain) (domain.BookDomain, error) {
 	return cb.Br.Save(book)
 }

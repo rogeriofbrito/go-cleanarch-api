@@ -37,7 +37,10 @@ func (bc Controller) CreateBookUseCase(request Request) (BookModel, error) {
 		Pages: bm.Pages,
 	}
 
-	bd = bc.Cb.Execute(bd)
+	bd, err = bc.Cb.Execute(bd)
+	if err != nil {
+		return BookModel{}, err
+	}
 
 	return BookModel{
 		Id:    bd.Id,
