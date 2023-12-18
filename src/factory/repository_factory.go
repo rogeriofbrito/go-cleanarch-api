@@ -1,9 +1,9 @@
 package factory
 
 import (
-	"github.com/rogeriofbrito/go-mvc/src/core/external"
-	"github.com/rogeriofbrito/go-mvc/src/env"
-	"github.com/rogeriofbrito/go-mvc/src/infra/repository"
+	"github.com/rogeriofbrito/go-cleanarch-api/src/core/external"
+	"github.com/rogeriofbrito/go-cleanarch-api/src/env"
+	"github.com/rogeriofbrito/go-cleanarch-api/src/infra/repository"
 )
 
 func NewBookRepository() external.IBookRepository {

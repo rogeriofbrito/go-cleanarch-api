@@ -1,8 +1,8 @@
 package factory
 
 import (
-	"github.com/rogeriofbrito/go-mvc/src/env"
-	"github.com/rogeriofbrito/go-mvc/src/infra/controller"
+	"github.com/rogeriofbrito/go-cleanarch-api/src/env"
+	"github.com/rogeriofbrito/go-cleanarch-api/src/infra/controller"
 )
 
 func NewController() controller.Controller {

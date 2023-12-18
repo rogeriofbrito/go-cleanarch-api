@@ -5,8 +5,8 @@ import (
 	"fmt"
 
 	_ "github.com/lib/pq"
-	"github.com/rogeriofbrito/go-mvc/src/core/domain"
-	"github.com/rogeriofbrito/go-mvc/src/env"
+	"github.com/rogeriofbrito/go-cleanarch-api/src/core/domain"
+	"github.com/rogeriofbrito/go-cleanarch-api/src/env"
 )
 
 type PostgresBookRepository struct {

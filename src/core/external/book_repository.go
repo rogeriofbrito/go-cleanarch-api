@@ -1,6 +1,6 @@
 package external
 
-import "github.com/rogeriofbrito/go-mvc/src/core/domain"
+import "github.com/rogeriofbrito/go-cleanarch-api/src/core/domain"
 
 type IBookRepository interface {
 	Save(book domain.Book) domain.Book

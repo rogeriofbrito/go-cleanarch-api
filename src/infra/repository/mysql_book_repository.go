@@ -5,8 +5,8 @@ import (
 	"fmt"
 
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/rogeriofbrito/go-mvc/src/core/domain"
-	"github.com/rogeriofbrito/go-mvc/src/env"
+	"github.com/rogeriofbrito/go-cleanarch-api/src/core/domain"
+	"github.com/rogeriofbrito/go-cleanarch-api/src/env"
 )
 
 type MySqlBookRepository struct {

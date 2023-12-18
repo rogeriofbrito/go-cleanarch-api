@@ -1,8 +1,8 @@
 package usecase
 
 import (
-	"github.com/rogeriofbrito/go-mvc/src/core/domain"
-	core_external "github.com/rogeriofbrito/go-mvc/src/core/external"
+	"github.com/rogeriofbrito/go-cleanarch-api/src/core/domain"
+	core_external "github.com/rogeriofbrito/go-cleanarch-api/src/core/external"
 )
 
 type CreateBook struct {

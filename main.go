@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/rogeriofbrito/go-mvc/src/factory"
+	"github.com/rogeriofbrito/go-cleanarch-api/src/factory"
 )
 
 func main() {

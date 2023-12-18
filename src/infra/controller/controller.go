@@ -1,8 +1,8 @@
 package controller
 
 import (
-	"github.com/rogeriofbrito/go-mvc/src/core/domain"
-	"github.com/rogeriofbrito/go-mvc/src/core/usecase"
+	"github.com/rogeriofbrito/go-cleanarch-api/src/core/domain"
+	"github.com/rogeriofbrito/go-cleanarch-api/src/core/usecase"
 )
 
 type Book struct {
