@@ -7,7 +7,7 @@ import (
 
 func NewController() controller.Controller {
 	return controller.Controller{
-		Cb: NewCreateBook(),
+		Cb: NewCreateBookUseCase(),
 	}
 }
 
@@ -16,23 +16,23 @@ func NewControllerAdapter() controller.IControllerAdapter {
 
 	switch envs.GetHttpFramework() {
 	case env.Gin:
-		return NewGinController()
+		return NewGinControllerAdapter()
 	case env.Fiber:
-		return NewFiberController()
+		return NewFiberControllerAdapter()
 	}
 
-	return NewFiberController() // default
+	return NewFiberControllerAdapter() // default
 }
 
-func NewGinController() controller.GinController {
-	return controller.GinController{
+func NewGinControllerAdapter() controller.GinControllerAdapter {
+	return controller.GinControllerAdapter{
 		Controller: NewController(),
 		Gin:        NewGinEngine(),
 	}
 }
 
-func NewFiberController() controller.FiberController {
-	return controller.FiberController{
+func NewFiberControllerAdapter() controller.FiberControllerAdapter {
+	return controller.FiberControllerAdapter{
 		Controller: NewController(),
 		App:        NewFiberApp(),
 	}

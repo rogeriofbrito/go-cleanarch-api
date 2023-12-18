@@ -13,7 +13,7 @@ type PostgresBookRepository struct {
 	Env env.IEnv
 }
 
-func (pbr PostgresBookRepository) Save(book domain.Book) domain.Book {
+func (pbr PostgresBookRepository) Save(book domain.BookDomain) domain.BookDomain {
 	conn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
 		pbr.Env.GetPostgresBookHost(),
 		pbr.Env.GetPostgresBookPort(),
@@ -36,7 +36,7 @@ func (pbr PostgresBookRepository) Save(book domain.Book) domain.Book {
 	}
 
 	defer db.Close()
-	return domain.Book{
+	return domain.BookDomain{
 		Id:    book.Id,
 		Title: book.Title,
 		Pages: book.Pages,

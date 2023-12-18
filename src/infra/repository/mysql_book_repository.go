@@ -13,7 +13,7 @@ type MySqlBookRepository struct {
 	Env env.IEnv
 }
 
-func (msbr MySqlBookRepository) Save(book domain.Book) domain.Book {
+func (msbr MySqlBookRepository) Save(book domain.BookDomain) domain.BookDomain {
 	conn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s",
 		msbr.Env.GetMySqlBookUser(),
 		msbr.Env.GetMySqlBookPassword(),
@@ -37,7 +37,7 @@ func (msbr MySqlBookRepository) Save(book domain.Book) domain.Book {
 	}
 
 	defer db.Close()
-	return domain.Book{
+	return domain.BookDomain{
 		Id:    book.Id,
 		Title: book.Title,
 		Pages: book.Pages,

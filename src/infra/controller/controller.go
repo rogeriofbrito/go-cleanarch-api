@@ -12,11 +12,11 @@ type Book struct {
 }
 
 type Controller struct {
-	Cb usecase.CreateBook
+	Cb usecase.CreateBookUseCase
 }
 
-func (bc Controller) CreateBook(params map[string]string, headers map[string]string, body Book) Book {
-	book := domain.Book{
+func (bc Controller) CreateBookUseCase(params map[string]string, headers map[string]string, body Book) Book {
+	book := domain.BookDomain{
 		Id:    body.Id,
 		Title: body.Title,
 		Pages: body.Pages,

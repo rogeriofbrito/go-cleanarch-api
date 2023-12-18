@@ -1,6 +1,6 @@
 package domain
 
-type Book struct {
+type BookDomain struct {
 	Id    int
 	Title string
 	Pages int
