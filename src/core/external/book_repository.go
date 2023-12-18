@@ -1,4 +1,4 @@
-package core_external
+package external
 
 import "github.com/rogeriofbrito/go-mvc/src/core/domain"
 

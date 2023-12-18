@@ -1,10 +1,9 @@
-package controller
+package adapter
 
 import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	controller_model "github.com/rogeriofbrito/go-mvc/src/ports/input/controller/model"
 )
 
 type GinController struct {
@@ -14,9 +13,9 @@ type GinController struct {
 
 // adapts to CreateBook controller function
 func (gc GinController) CreateBook(c *gin.Context) {
-	book := new(controller_model.Book) // TODO: parse body
-	var params map[string]string       // TODO: parse params
-	var headers map[string]string      // TODO: parse headers
+	book := new(Book)             // TODO: parse body
+	var params map[string]string  // TODO: parse params
+	var headers map[string]string // TODO: parse headers
 
 	if err := c.BindJSON(&book); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
