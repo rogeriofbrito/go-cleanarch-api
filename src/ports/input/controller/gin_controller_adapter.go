@@ -1,24 +1,30 @@
-package adapter
+package controller
 
 import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/rogeriofbrito/go-mvc/src/controller"
-	"github.com/rogeriofbrito/go-mvc/src/model"
+	controller_model "github.com/rogeriofbrito/go-mvc/src/ports/input/controller/model"
 )
 
 type GinController struct {
-	Controller controller.IController
+	Controller Controller
 	Gin        *gin.Engine
 }
 
 // adapts to CreateBook controller function
 func (gc GinController) CreateBook(c *gin.Context) {
-	book := new(model.Book)       // TODO: parse body
-	var params map[string]string  // TODO: parse params
-	var headers map[string]string // TODO: parse headers
-	c.JSON(http.StatusOK, gc.Controller.CreateBook(params, headers, *book))
+	book := new(controller_model.Book) // TODO: parse body
+	var params map[string]string       // TODO: parse params
+	var headers map[string]string      // TODO: parse headers
+
+	if err := c.BindJSON(&book); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	*book = gc.Controller.CreateBook(params, headers, *book)
+	c.JSON(http.StatusOK, book)
 }
 
 // adapts to GetBook controller function

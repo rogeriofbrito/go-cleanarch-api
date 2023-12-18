@@ -1,19 +1,18 @@
-package adapter
+package controller
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/rogeriofbrito/go-mvc/src/controller"
-	"github.com/rogeriofbrito/go-mvc/src/model"
+	controller_model "github.com/rogeriofbrito/go-mvc/src/ports/input/controller/model"
 )
 
 type FiberController struct {
-	Controller controller.IController
+	Controller Controller
 	App        *fiber.App
 }
 
 // adapts to CreateBook controller function
 func (fc FiberController) CreateBook(c *fiber.Ctx) error {
-	book := new(model.Book)
+	book := new(controller_model.Book)
 	if err := c.BodyParser(book); err != nil {
 		return err
 	}

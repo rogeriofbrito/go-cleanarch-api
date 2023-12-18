@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:alpine3.19
+    environment:
+      POSTGRES_PASSWORD: book
+      POSTGRES_USER: book
+      POSTGRES_DB: book
+    ports:
+      - 5432:5432
+  mysql:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: book
+      MYSQL_USER: book
+      MYSQL_PASSWORD: book
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - 3306:3306
