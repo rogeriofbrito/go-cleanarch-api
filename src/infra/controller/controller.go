@@ -1,4 +1,4 @@
-package adapter
+package controller
 
 import (
 	"github.com/rogeriofbrito/go-mvc/src/core/domain"

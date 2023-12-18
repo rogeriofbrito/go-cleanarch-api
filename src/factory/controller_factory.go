@@ -1,17 +1,17 @@
 package factory
 
 import (
-	"github.com/rogeriofbrito/go-mvc/src/adapter"
 	"github.com/rogeriofbrito/go-mvc/src/env"
+	"github.com/rogeriofbrito/go-mvc/src/infra/controller"
 )
 
-func NewController() adapter.Controller {
-	return adapter.Controller{
+func NewController() controller.Controller {
+	return controller.Controller{
 		Cb: NewCreateBook(),
 	}
 }
 
-func NewControllerAdapter() adapter.IControllerAdapter {
+func NewControllerAdapter() controller.IControllerAdapter {
 	envs := NewEnv()
 
 	switch envs.GetHttpFramework() {
@@ -24,15 +24,15 @@ func NewControllerAdapter() adapter.IControllerAdapter {
 	return NewFiberController() // default
 }
 
-func NewGinController() adapter.GinController {
-	return adapter.GinController{
+func NewGinController() controller.GinController {
+	return controller.GinController{
 		Controller: NewController(),
 		Gin:        NewGinEngine(),
 	}
 }
 
-func NewFiberController() adapter.FiberController {
-	return adapter.FiberController{
+func NewFiberController() controller.FiberController {
+	return controller.FiberController{
 		Controller: NewController(),
 		App:        NewFiberApp(),
 	}

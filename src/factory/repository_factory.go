@@ -1,24 +1,24 @@
 package factory
 
 import (
-	core_external "github.com/rogeriofbrito/go-mvc/src/core/external"
+	"github.com/rogeriofbrito/go-mvc/src/core/external"
 	"github.com/rogeriofbrito/go-mvc/src/env"
-	"github.com/rogeriofbrito/go-mvc/src/port"
+	"github.com/rogeriofbrito/go-mvc/src/infra/repository"
 )
 
-func NewBookRepository() core_external.IBookRepository {
+func NewBookRepository() external.IBookRepository {
 	envs := NewEnv()
 
 	switch envs.GetDatabaseType() {
 	case env.MySql:
-		return port.MySqlBookRepository{
+		return repository.MySqlBookRepository{
 			Env: NewEnv(),
 		}
 	case env.Postgres:
-		return port.PostgresBookRepository{
+		return repository.PostgresBookRepository{
 			Env: NewEnv(),
 		}
 	}
 
-	return port.MySqlBookRepository{} // default
+	return repository.MySqlBookRepository{} // default
 }
