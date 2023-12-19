@@ -8,6 +8,7 @@ import (
 func NewController() controller.Controller {
 	return controller.Controller{
 		Cb: NewCreateBookUseCase(),
+		Gb: NewGetBookUseCase(),
 	}
 }
 

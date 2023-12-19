@@ -30,10 +30,12 @@ func (fc FiberControllerAdapter) CreateBookUseCase(c *fiber.Ctx) error {
 // adapts to GetBook controller function
 func (fc FiberControllerAdapter) GetBook(c *fiber.Ctx) error {
 	request := Request{
-		pathVariables: nil, // TODO: parse path variables
-		params:        nil, // TODO: parse params
-		headers:       nil, // TODO: parse headers
-		body:          c.Request().Body(),
+		pathVariables: map[string]string{
+			"id": c.Params("id"),
+		},
+		params:  nil, // TODO: parse params
+		headers: nil, // TODO: parse headers
+		body:    c.Request().Body(),
 	}
 
 	b, err := fc.Controller.GetBook(request)
@@ -46,7 +48,7 @@ func (fc FiberControllerAdapter) GetBook(c *fiber.Ctx) error {
 }
 
 func (fc FiberControllerAdapter) Start() error {
-	fc.App.Get("/book", func(c *fiber.Ctx) error {
+	fc.App.Get("/book/:id", func(c *fiber.Ctx) error {
 		return fc.GetBook(c)
 	})
 

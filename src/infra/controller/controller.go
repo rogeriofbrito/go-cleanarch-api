@@ -2,6 +2,7 @@ package controller
 
 import (
 	"encoding/json"
+	"strconv"
 
 	"github.com/rogeriofbrito/go-cleanarch-api/src/core/domain"
 	"github.com/rogeriofbrito/go-cleanarch-api/src/core/usecase"
@@ -22,6 +23,7 @@ type BookModel struct {
 
 type Controller struct {
 	Cb usecase.CreateBookUseCase
+	Gb usecase.GetBookUseCase
 }
 
 func (bc Controller) CreateBookUseCase(request Request) (BookModel, error) {
@@ -50,5 +52,19 @@ func (bc Controller) CreateBookUseCase(request Request) (BookModel, error) {
 }
 
 func (bc Controller) GetBook(request Request) (BookModel, error) {
-	return BookModel{}, nil
+	id, err := strconv.Atoi(request.pathVariables["id"])
+	if err != nil {
+		return BookModel{}, err
+	}
+
+	bd, err := bc.Gb.Execute(id)
+	if err != nil {
+		return BookModel{}, err
+	}
+
+	return BookModel{
+		Id:    bd.Id,
+		Title: bd.Title,
+		Pages: bd.Pages,
+	}, nil
 }

@@ -7,3 +7,9 @@ func NewCreateBookUseCase() usecase.CreateBookUseCase {
 		Br: NewBookRepository(),
 	}
 }
+
+func NewGetBookUseCase() usecase.GetBookUseCase {
+	return usecase.GetBookUseCase{
+		Br: NewBookRepository(),
+	}
+}
