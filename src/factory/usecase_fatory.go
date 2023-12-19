@@ -19,3 +19,9 @@ func NewUpdateBookUseCase() usecase.UpdateBookUseCase {
 		Br: NewBookRepository(),
 	}
 }
+
+func NewDeleteBookUseCase() usecase.DeleteBookUseCase {
+	return usecase.DeleteBookUseCase{
+		Br: NewBookRepository(),
+	}
+}

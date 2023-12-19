@@ -90,6 +90,31 @@ func (msbr MySqlBookRepository) Update(book domain.BookDomain) (domain.BookDomai
 	return book, nil
 }
 
+func (msbr MySqlBookRepository) Delete(id int) error {
+	_, err := msbr.GetById(id)
+	if err != nil {
+		return err
+	}
+
+	db, err := msbr.getDb()
+	if err != nil {
+		return err
+	}
+
+	err = db.Ping()
+	if err != nil {
+		return err
+	}
+
+	_, err = db.Query("DELETE FROM book WHERE id = ?", id)
+	if err != nil {
+		return err
+	}
+
+	defer db.Close()
+	return nil
+}
+
 func (msbr MySqlBookRepository) getDb() (*sql.DB, error) {
 	url := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s",
 		msbr.Env.GetMySqlBookUser(),

@@ -10,6 +10,7 @@ func NewController() controller.Controller {
 		Cb: NewCreateBookUseCase(),
 		Gb: NewGetBookUseCase(),
 		Ub: NewUpdateBookUseCase(),
+		Db: NewDeleteBookUseCase(),
 	}
 }
 

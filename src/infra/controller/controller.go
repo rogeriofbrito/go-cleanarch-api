@@ -25,6 +25,7 @@ type Controller struct {
 	Cb usecase.CreateBookUseCase
 	Gb usecase.GetBookUseCase
 	Ub usecase.UpdateBookUseCase
+	Db usecase.DeleteBookUseCase
 }
 
 func (bc Controller) CreateBook(request Request) (BookModel, error) {
@@ -93,4 +94,17 @@ func (bc Controller) UpdateBook(request Request) (BookModel, error) {
 		Title: bd.Title,
 		Pages: bd.Pages,
 	}, nil
+}
+
+func (bc Controller) DeleteBook(request Request) error {
+	id, err := strconv.Atoi(request.pathVariables["id"])
+	if err != nil {
+		return err
+	}
+
+	if err := bc.Db.Execute(id); err != nil {
+		return err
+	}
+
+	return nil
 }

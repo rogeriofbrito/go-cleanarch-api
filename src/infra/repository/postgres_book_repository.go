@@ -90,6 +90,31 @@ func (pbr PostgresBookRepository) Update(book domain.BookDomain) (domain.BookDom
 	return book, nil
 }
 
+func (pbr PostgresBookRepository) Delete(id int) error {
+	_, err := pbr.GetById(id)
+	if err != nil {
+		return err
+	}
+
+	db, err := pbr.getDb()
+	if err != nil {
+		return err
+	}
+
+	err = db.Ping()
+	if err != nil {
+		return err
+	}
+
+	_, err = db.Exec("DELETE FROM book WHERE id = $1", id)
+	if err != nil {
+		return err
+	}
+
+	defer db.Close()
+	return nil
+}
+
 func (pbr PostgresBookRepository) getDb() (*sql.DB, error) {
 	url := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
 		pbr.Env.GetPostgresBookHost(),
