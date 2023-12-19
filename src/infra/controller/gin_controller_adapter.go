@@ -103,5 +103,5 @@ func (gc GinControllerAdapter) Start() error {
 		gc.DeleteBook(c)
 	})
 
-	return gc.Gin.Run(":3000")
+	return gc.Gin.Run("127.0.0.1:3000")
 }

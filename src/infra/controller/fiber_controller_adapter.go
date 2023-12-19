@@ -99,5 +99,5 @@ func (fc FiberControllerAdapter) Start() error {
 		return fc.DeleteBook(c)
 	})
 
-	return fc.App.Listen(":3000")
+	return fc.App.Listen("127.0.0.1:3000")
 }
