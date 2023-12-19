@@ -66,11 +66,6 @@ func (pbr PostgresBookRepository) GetById(id int) (domain.BookDomain, error) {
 }
 
 func (pbr PostgresBookRepository) Update(book domain.BookDomain) (domain.BookDomain, error) {
-	_, err := pbr.GetById(book.Id)
-	if err != nil {
-		return domain.BookDomain{}, err
-	}
-
 	db, err := pbr.getDb()
 	if err != nil {
 		return domain.BookDomain{}, err
@@ -91,11 +86,6 @@ func (pbr PostgresBookRepository) Update(book domain.BookDomain) (domain.BookDom
 }
 
 func (pbr PostgresBookRepository) Delete(id int) error {
-	_, err := pbr.GetById(id)
-	if err != nil {
-		return err
-	}
-
 	db, err := pbr.getDb()
 	if err != nil {
 		return err

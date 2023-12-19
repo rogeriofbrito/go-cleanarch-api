@@ -66,11 +66,6 @@ func (msbr MySqlBookRepository) GetById(id int) (domain.BookDomain, error) {
 }
 
 func (msbr MySqlBookRepository) Update(book domain.BookDomain) (domain.BookDomain, error) {
-	_, err := msbr.GetById(book.Id)
-	if err != nil {
-		return domain.BookDomain{}, err
-	}
-
 	db, err := msbr.getDb()
 	if err != nil {
 		return domain.BookDomain{}, err
@@ -91,11 +86,6 @@ func (msbr MySqlBookRepository) Update(book domain.BookDomain) (domain.BookDomai
 }
 
 func (msbr MySqlBookRepository) Delete(id int) error {
-	_, err := msbr.GetById(id)
-	if err != nil {
-		return err
-	}
-
 	db, err := msbr.getDb()
 	if err != nil {
 		return err

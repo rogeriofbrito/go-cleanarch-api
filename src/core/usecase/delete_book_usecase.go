@@ -7,5 +7,10 @@ type DeleteBookUseCase struct {
 }
 
 func (db DeleteBookUseCase) Execute(id int) error {
+	_, err := db.Br.GetById(id)
+	if err != nil {
+		return err
+	}
+
 	return db.Br.Delete(id)
 }
