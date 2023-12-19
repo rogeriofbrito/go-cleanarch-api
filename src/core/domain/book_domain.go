@@ -1,7 +1,7 @@
 package domain
 
 type BookDomain struct {
-	Id    int
+	Id    int64
 	Title string
 	Pages int
 }

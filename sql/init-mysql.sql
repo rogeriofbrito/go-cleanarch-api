@@ -1,5 +1,5 @@
 create table book (
-    id int,
-    title text,
-    pages int
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    title TEXT,
+    pages INT
 )

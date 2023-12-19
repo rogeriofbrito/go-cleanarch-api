@@ -13,27 +13,32 @@ type MySqlBookRepository struct {
 	Env env.IEnv
 }
 
-func (msbr MySqlBookRepository) Save(book domain.BookDomain) (domain.BookDomain, error) {
+func (msbr MySqlBookRepository) Save(book domain.BookDomain) (int64, error) {
 	db, err := msbr.getDb()
 	if err != nil {
-		return domain.BookDomain{}, err
+		return 0, err
 	}
 
 	err = db.Ping()
 	if err != nil {
-		return domain.BookDomain{}, err
+		return 0, err
 	}
 
-	_, err = db.Query("INSERT INTO book VALUES(?, ?, ?)", book.Id, book.Title, book.Pages)
+	result, err := db.Exec("INSERT INTO book(title, pages) VALUES(?, ?)", book.Title, book.Pages)
 	if err != nil {
-		return domain.BookDomain{}, err
+		return 0, err
+	}
+
+	id, err := result.LastInsertId()
+	if err != nil {
+		return 0, err
 	}
 
 	defer db.Close()
-	return book, nil
+	return id, nil
 }
 
-func (msbr MySqlBookRepository) GetById(id int) (domain.BookDomain, error) {
+func (msbr MySqlBookRepository) GetById(id int64) (domain.BookDomain, error) {
 	db, err := msbr.getDb()
 	if err != nil {
 		return domain.BookDomain{}, err
@@ -85,7 +90,7 @@ func (msbr MySqlBookRepository) Update(book domain.BookDomain) (domain.BookDomai
 	return book, nil
 }
 
-func (msbr MySqlBookRepository) Delete(id int) error {
+func (msbr MySqlBookRepository) Delete(id int64) error {
 	db, err := msbr.getDb()
 	if err != nil {
 		return err

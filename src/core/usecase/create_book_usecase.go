@@ -10,5 +10,15 @@ type CreateBookUseCase struct {
 }
 
 func (cb CreateBookUseCase) Execute(book domain.BookDomain) (domain.BookDomain, error) {
-	return cb.Br.Save(book)
+	id, err := cb.Br.Save(book)
+	if err != nil {
+		return domain.BookDomain{}, err
+	}
+
+	book, err = cb.Br.GetById(id)
+	if err != nil {
+		return domain.BookDomain{}, err
+	}
+
+	return book, nil
 }

@@ -6,7 +6,7 @@ type DeleteBookUseCase struct {
 	Br external.IBookRepository
 }
 
-func (db DeleteBookUseCase) Execute(id int) error {
+func (db DeleteBookUseCase) Execute(id int64) error {
 	_, err := db.Br.GetById(id)
 	if err != nil {
 		return err

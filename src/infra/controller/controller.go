@@ -16,7 +16,7 @@ type Request struct {
 }
 
 type BookModel struct {
-	Id    int    `json:"id"`
+	Id    int64  `json:"id"`
 	Title string `json:"title"`
 	Pages int    `json:"pages"`
 }
@@ -54,7 +54,7 @@ func (bc Controller) CreateBook(request Request) (BookModel, error) {
 }
 
 func (bc Controller) GetBook(request Request) (BookModel, error) {
-	id, err := strconv.Atoi(request.pathVariables["id"])
+	id, err := strconv.ParseInt(request.pathVariables["id"], 10, 64)
 	if err != nil {
 		return BookModel{}, err
 	}
@@ -97,7 +97,7 @@ func (bc Controller) UpdateBook(request Request) (BookModel, error) {
 }
 
 func (bc Controller) DeleteBook(request Request) error {
-	id, err := strconv.Atoi(request.pathVariables["id"])
+	id, err := strconv.ParseInt(request.pathVariables["id"], 10, 64)
 	if err != nil {
 		return err
 	}

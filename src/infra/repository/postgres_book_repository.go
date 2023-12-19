@@ -13,32 +13,30 @@ type PostgresBookRepository struct {
 	Env env.IEnv
 }
 
-func (pbr PostgresBookRepository) Save(book domain.BookDomain) (domain.BookDomain, error) {
+func (pbr PostgresBookRepository) Save(book domain.BookDomain) (int64, error) {
 	db, err := pbr.getDb()
 	if err != nil {
-		return domain.BookDomain{}, err
+		return 0, err
 	}
 
 	err = db.Ping()
 	if err != nil {
-		return domain.BookDomain{}, err
+		return 0, err
 	}
 
-	_, err = db.Exec("INSERT INTO book VALUES($1, $2, $3)", book.Id, book.Title, book.Pages)
+	row := db.QueryRow("INSERT INTO book(title, pages) VALUES($1, $2) RETURNING id", book.Title, book.Pages)
+	var id int64
 
+	err = row.Scan(&id)
 	if err != nil {
-		return domain.BookDomain{}, err
+		return 0, err
 	}
 
 	defer db.Close()
-	return domain.BookDomain{
-		Id:    book.Id,
-		Title: book.Title,
-		Pages: book.Pages,
-	}, nil
+	return id, nil
 }
 
-func (pbr PostgresBookRepository) GetById(id int) (domain.BookDomain, error) {
+func (pbr PostgresBookRepository) GetById(id int64) (domain.BookDomain, error) {
 	db, err := pbr.getDb()
 	if err != nil {
 		return domain.BookDomain{}, err
@@ -85,7 +83,7 @@ func (pbr PostgresBookRepository) Update(book domain.BookDomain) (domain.BookDom
 	return book, nil
 }
 
-func (pbr PostgresBookRepository) Delete(id int) error {
+func (pbr PostgresBookRepository) Delete(id int64) error {
 	db, err := pbr.getDb()
 	if err != nil {
 		return err

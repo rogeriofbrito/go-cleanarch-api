@@ -9,6 +9,6 @@ type GetBookUseCase struct {
 	Br external.IBookRepository
 }
 
-func (gb GetBookUseCase) Execute(id int) (domain.BookDomain, error) {
+func (gb GetBookUseCase) Execute(id int64) (domain.BookDomain, error) {
 	return gb.Br.GetById(id)
 }

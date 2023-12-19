@@ -1,5 +1,5 @@
 create table book (
-    id int,
-    title text,
-    pages int
+    id SERIAL PRIMARY KEY,
+    title TEXT,
+    pages INT
 )
