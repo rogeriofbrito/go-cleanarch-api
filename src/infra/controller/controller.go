@@ -24,9 +24,10 @@ type BookModel struct {
 type Controller struct {
 	Cb usecase.CreateBookUseCase
 	Gb usecase.GetBookUseCase
+	Ub usecase.UpdateBookUseCase
 }
 
-func (bc Controller) CreateBookUseCase(request Request) (BookModel, error) {
+func (bc Controller) CreateBook(request Request) (BookModel, error) {
 	bm := new(BookModel)
 	err := json.Unmarshal(request.body, &bm)
 	if err != nil {
@@ -58,6 +59,31 @@ func (bc Controller) GetBook(request Request) (BookModel, error) {
 	}
 
 	bd, err := bc.Gb.Execute(id)
+	if err != nil {
+		return BookModel{}, err
+	}
+
+	return BookModel{
+		Id:    bd.Id,
+		Title: bd.Title,
+		Pages: bd.Pages,
+	}, nil
+}
+
+func (bc Controller) UpdateBook(request Request) (BookModel, error) {
+	bm := new(BookModel)
+	err := json.Unmarshal(request.body, &bm)
+	if err != nil {
+		return BookModel{}, err
+	}
+
+	bd := domain.BookDomain{
+		Id:    bm.Id,
+		Title: bm.Title,
+		Pages: bm.Pages,
+	}
+
+	bd, err = bc.Ub.Execute(bd)
 	if err != nil {
 		return BookModel{}, err
 	}

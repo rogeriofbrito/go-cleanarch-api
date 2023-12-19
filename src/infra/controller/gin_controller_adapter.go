@@ -22,7 +22,7 @@ func (gc GinControllerAdapter) CreateBookUseCase(c *gin.Context) {
 		body:          body,
 	}
 
-	b, err := gc.Controller.CreateBookUseCase(request)
+	b, err := gc.Controller.CreateBook(request)
 	if err != nil {
 		c.String(http.StatusInternalServerError, err.Error())
 		return

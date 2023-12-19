@@ -30,11 +30,7 @@ func (msbr MySqlBookRepository) Save(book domain.BookDomain) (domain.BookDomain,
 	}
 
 	defer db.Close()
-	return domain.BookDomain{
-		Id:    book.Id,
-		Title: book.Title,
-		Pages: book.Pages,
-	}, nil
+	return book, nil
 }
 
 func (msbr MySqlBookRepository) GetById(id int) (domain.BookDomain, error) {
@@ -67,6 +63,31 @@ func (msbr MySqlBookRepository) GetById(id int) (domain.BookDomain, error) {
 		Title: book.Title,
 		Pages: book.Pages,
 	}, nil
+}
+
+func (msbr MySqlBookRepository) Update(book domain.BookDomain) (domain.BookDomain, error) {
+	_, err := msbr.GetById(book.Id)
+	if err != nil {
+		return domain.BookDomain{}, err
+	}
+
+	db, err := msbr.getDb()
+	if err != nil {
+		return domain.BookDomain{}, err
+	}
+
+	err = db.Ping()
+	if err != nil {
+		return domain.BookDomain{}, err
+	}
+
+	_, err = db.Query("UPDATE book SET title = ?, pages = ? WHERE id = ?", book.Title, book.Pages, book.Id)
+	if err != nil {
+		return domain.BookDomain{}, err
+	}
+
+	defer db.Close()
+	return book, nil
 }
 
 func (msbr MySqlBookRepository) getDb() (*sql.DB, error) {

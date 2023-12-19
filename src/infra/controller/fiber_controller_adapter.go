@@ -10,7 +10,7 @@ type FiberControllerAdapter struct {
 }
 
 // adapts to CreateBookUseCase controller function
-func (fc FiberControllerAdapter) CreateBookUseCase(c *fiber.Ctx) error {
+func (fc FiberControllerAdapter) CreateBook(c *fiber.Ctx) error {
 	request := Request{
 		pathVariables: nil, // TODO: parse path variables
 		params:        nil, // TODO: parse params
@@ -18,7 +18,7 @@ func (fc FiberControllerAdapter) CreateBookUseCase(c *fiber.Ctx) error {
 		body:          c.Request().Body(),
 	}
 
-	b, err := fc.Controller.CreateBookUseCase(request)
+	b, err := fc.Controller.CreateBook(request)
 	if err != nil {
 		return err
 	}
@@ -47,13 +47,34 @@ func (fc FiberControllerAdapter) GetBook(c *fiber.Ctx) error {
 	return nil
 }
 
+func (fc FiberControllerAdapter) UpdateBook(c *fiber.Ctx) error {
+	request := Request{
+		pathVariables: nil, // TODO: parse path variables
+		params:        nil, // TODO: parse params
+		headers:       nil, // TODO: parse headers
+		body:          c.Request().Body(),
+	}
+
+	b, err := fc.Controller.UpdateBook(request)
+	if err != nil {
+		return err
+	}
+
+	c.JSON(b)
+	return nil
+}
+
 func (fc FiberControllerAdapter) Start() error {
 	fc.App.Get("/book/:id", func(c *fiber.Ctx) error {
 		return fc.GetBook(c)
 	})
 
 	fc.App.Post("/book", func(c *fiber.Ctx) error {
-		return fc.CreateBookUseCase(c)
+		return fc.CreateBook(c)
+	})
+
+	fc.App.Put("/book", func(c *fiber.Ctx) error {
+		return fc.UpdateBook(c)
 	})
 
 	return fc.App.Listen(":3000")

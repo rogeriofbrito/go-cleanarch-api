@@ -13,3 +13,9 @@ func NewGetBookUseCase() usecase.GetBookUseCase {
 		Br: NewBookRepository(),
 	}
 }
+
+func NewUpdateBookUseCase() usecase.UpdateBookUseCase {
+	return usecase.UpdateBookUseCase{
+		Br: NewBookRepository(),
+	}
+}
