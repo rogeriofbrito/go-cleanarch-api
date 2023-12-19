@@ -3,11 +3,11 @@ package env
 type StaticEnv struct{}
 
 func (se StaticEnv) GetHttpFramework() HttpFrameworkType {
-	return HttpFrameworkType("GIN")
+	return HttpFrameworkType("FIBER")
 }
 
 func (se StaticEnv) GetDatabaseType() DatabaseType {
-	return DatabaseType("POSTGRES")
+	return DatabaseType("MYSQL")
 }
 
 func (se StaticEnv) GetMySqlBookDatabase() string {
