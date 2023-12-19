@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"io/ioutil"
+	"io"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -14,7 +14,7 @@ type GinControllerAdapter struct {
 
 // adapts to CreateBookUseCase controller function
 func (gc GinControllerAdapter) CreateBookUseCase(c *gin.Context) {
-	body, _ := ioutil.ReadAll(c.Request.Body)
+	body, _ := io.ReadAll(c.Request.Body)
 	request := Request{
 		pathVariables: nil, // TODO: parse path variables
 		params:        nil, // TODO: parse params
@@ -33,7 +33,7 @@ func (gc GinControllerAdapter) CreateBookUseCase(c *gin.Context) {
 
 // adapts to GetBook controller function
 func (gc GinControllerAdapter) GetBook(c *gin.Context) {
-	body, _ := ioutil.ReadAll(c.Request.Body)
+	body, _ := io.ReadAll(c.Request.Body)
 	request := Request{
 		pathVariables: map[string]string{
 			"id": c.Param("id"),
