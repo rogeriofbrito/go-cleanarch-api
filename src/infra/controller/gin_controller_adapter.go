@@ -15,10 +15,7 @@ type GinControllerAdapter struct {
 func (gc GinControllerAdapter) CreateBook(c *gin.Context) {
 	body, _ := io.ReadAll(c.Request.Body)
 	request := Request{
-		pathVariables: nil, // TODO: parse path variables
-		params:        nil, // TODO: parse params
-		headers:       nil, // TODO: parse headers
-		body:          body,
+		body: body,
 	}
 
 	b, err := gc.Controller.CreateBook(request)
@@ -35,9 +32,7 @@ func (gc GinControllerAdapter) GetBook(c *gin.Context) {
 		pathVariables: map[string]string{
 			"id": c.Param("id"),
 		},
-		params:  nil, // TODO: parse params
-		headers: nil, // TODO: parse headers
-		body:    nil,
+		body: nil,
 	}
 
 	b, err := gc.Controller.GetBook(request)
@@ -52,10 +47,7 @@ func (gc GinControllerAdapter) GetBook(c *gin.Context) {
 func (gc GinControllerAdapter) UpdateBook(c *gin.Context) {
 	body, _ := io.ReadAll(c.Request.Body)
 	request := Request{
-		pathVariables: nil, // TODO: parse path variables
-		params:        nil, // TODO: parse params
-		headers:       nil, // TODO: parse headers
-		body:          body,
+		body: body,
 	}
 
 	b, err := gc.Controller.UpdateBook(request)
@@ -72,9 +64,7 @@ func (gc GinControllerAdapter) DeleteBook(c *gin.Context) {
 		pathVariables: map[string]string{
 			"id": c.Param("id"),
 		},
-		params:  nil, // TODO: parse params
-		headers: nil, // TODO: parse headers
-		body:    nil,
+		body: nil,
 	}
 
 	err := gc.Controller.DeleteBook(request)

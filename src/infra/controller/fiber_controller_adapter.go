@@ -9,13 +9,9 @@ type FiberControllerAdapter struct {
 	App        *fiber.App
 }
 
-// adapts to CreateBookUseCase controller function
 func (fc FiberControllerAdapter) CreateBook(c *fiber.Ctx) error {
 	request := Request{
-		pathVariables: nil, // TODO: parse path variables
-		params:        nil, // TODO: parse params
-		headers:       nil, // TODO: parse headers
-		body:          c.Request().Body(),
+		body: c.Request().Body(),
 	}
 
 	b, err := fc.Controller.CreateBook(request)
@@ -27,15 +23,12 @@ func (fc FiberControllerAdapter) CreateBook(c *fiber.Ctx) error {
 	return nil
 }
 
-// adapts to GetBook controller function
 func (fc FiberControllerAdapter) GetBook(c *fiber.Ctx) error {
 	request := Request{
 		pathVariables: map[string]string{
 			"id": c.Params("id"),
 		},
-		params:  nil, // TODO: parse params
-		headers: nil, // TODO: parse headers
-		body:    c.Request().Body(),
+		body: c.Request().Body(),
 	}
 
 	b, err := fc.Controller.GetBook(request)
@@ -49,10 +42,7 @@ func (fc FiberControllerAdapter) GetBook(c *fiber.Ctx) error {
 
 func (fc FiberControllerAdapter) UpdateBook(c *fiber.Ctx) error {
 	request := Request{
-		pathVariables: nil, // TODO: parse path variables
-		params:        nil, // TODO: parse params
-		headers:       nil, // TODO: parse headers
-		body:          c.Request().Body(),
+		body: c.Request().Body(),
 	}
 
 	b, err := fc.Controller.UpdateBook(request)
@@ -69,9 +59,7 @@ func (fc FiberControllerAdapter) DeleteBook(c *fiber.Ctx) error {
 		pathVariables: map[string]string{
 			"id": c.Params("id"),
 		},
-		params:  nil, // TODO: parse params
-		headers: nil, // TODO: parse headers
-		body:    nil,
+		body: nil,
 	}
 
 	err := fc.Controller.DeleteBook(request)
