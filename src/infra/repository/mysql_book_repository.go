@@ -81,7 +81,7 @@ func (msbr MySqlBookRepository) Update(book domain.BookDomain) (domain.BookDomai
 		return domain.BookDomain{}, err
 	}
 
-	_, err = db.Query("UPDATE book SET title = ?, pages = ? WHERE id = ?", book.Title, book.Pages, book.Id)
+	_, err = db.Exec("UPDATE book SET title = ?, pages = ? WHERE id = ?", book.Title, book.Pages, book.Id)
 	if err != nil {
 		return domain.BookDomain{}, err
 	}
@@ -101,7 +101,7 @@ func (msbr MySqlBookRepository) Delete(id int64) error {
 		return err
 	}
 
-	_, err = db.Query("DELETE FROM book WHERE id = ?", id)
+	_, err = db.Exec("DELETE FROM book WHERE id = ?", id)
 	if err != nil {
 		return err
 	}
