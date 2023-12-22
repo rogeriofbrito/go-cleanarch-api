@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"strconv"
+
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -10,11 +12,12 @@ type FiberControllerAdapter struct {
 }
 
 func (fc FiberControllerAdapter) CreateBook(c *fiber.Ctx) error {
-	request := Request{
-		body: c.Request().Body(),
+	b := BookModel{}
+	if err := c.BodyParser(&b); err != nil {
+		return err
 	}
 
-	b, err := fc.Controller.CreateBook(request)
+	b, err := fc.Controller.CreateBook(b)
 	if err != nil {
 		return err
 	}
@@ -24,14 +27,12 @@ func (fc FiberControllerAdapter) CreateBook(c *fiber.Ctx) error {
 }
 
 func (fc FiberControllerAdapter) GetBook(c *fiber.Ctx) error {
-	request := Request{
-		pathVariables: map[string]string{
-			"id": c.Params("id"),
-		},
-		body: c.Request().Body(),
+	id, err := strconv.ParseInt(c.Params("id"), 10, 64)
+	if err != nil {
+		return err
 	}
 
-	b, err := fc.Controller.GetBook(request)
+	b, err := fc.Controller.GetBook(id)
 	if err != nil {
 		return err
 	}
@@ -41,11 +42,12 @@ func (fc FiberControllerAdapter) GetBook(c *fiber.Ctx) error {
 }
 
 func (fc FiberControllerAdapter) UpdateBook(c *fiber.Ctx) error {
-	request := Request{
-		body: c.Request().Body(),
+	b := BookModel{}
+	if err := c.BodyParser(&b); err != nil {
+		return err
 	}
 
-	b, err := fc.Controller.UpdateBook(request)
+	b, err := fc.Controller.UpdateBook(b)
 	if err != nil {
 		return err
 	}
@@ -55,15 +57,12 @@ func (fc FiberControllerAdapter) UpdateBook(c *fiber.Ctx) error {
 }
 
 func (fc FiberControllerAdapter) DeleteBook(c *fiber.Ctx) error {
-	request := Request{
-		pathVariables: map[string]string{
-			"id": c.Params("id"),
-		},
-		body: nil,
+	id, err := strconv.ParseInt(c.Params("id"), 10, 64)
+	if err != nil {
+		return err
 	}
 
-	err := fc.Controller.DeleteBook(request)
-	if err != nil {
+	if err := fc.Controller.DeleteBook(id); err != nil {
 		return err
 	}
 

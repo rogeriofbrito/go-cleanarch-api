@@ -1,8 +1,8 @@
 package controller
 
 import (
-	"io"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -13,12 +13,13 @@ type GinControllerAdapter struct {
 }
 
 func (gc GinControllerAdapter) CreateBook(c *gin.Context) {
-	body, _ := io.ReadAll(c.Request.Body)
-	request := Request{
-		body: body,
+	b := BookModel{}
+	if err := c.BindJSON(&b); err != nil {
+		c.String(http.StatusBadRequest, err.Error())
+		return
 	}
 
-	b, err := gc.Controller.CreateBook(request)
+	b, err := gc.Controller.CreateBook(b)
 	if err != nil {
 		c.String(http.StatusInternalServerError, err.Error())
 		return
@@ -28,14 +29,13 @@ func (gc GinControllerAdapter) CreateBook(c *gin.Context) {
 }
 
 func (gc GinControllerAdapter) GetBook(c *gin.Context) {
-	request := Request{
-		pathVariables: map[string]string{
-			"id": c.Param("id"),
-		},
-		body: nil,
+	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	if err != nil {
+		c.String(http.StatusInternalServerError, err.Error())
+		return
 	}
 
-	b, err := gc.Controller.GetBook(request)
+	b, err := gc.Controller.GetBook(id)
 	if err != nil {
 		c.String(http.StatusInternalServerError, err.Error())
 		return
@@ -45,12 +45,13 @@ func (gc GinControllerAdapter) GetBook(c *gin.Context) {
 }
 
 func (gc GinControllerAdapter) UpdateBook(c *gin.Context) {
-	body, _ := io.ReadAll(c.Request.Body)
-	request := Request{
-		body: body,
+	b := BookModel{}
+	if err := c.BindJSON(&b); err != nil {
+		c.String(http.StatusBadRequest, err.Error())
+		return
 	}
 
-	b, err := gc.Controller.UpdateBook(request)
+	b, err := gc.Controller.UpdateBook(b)
 	if err != nil {
 		c.String(http.StatusInternalServerError, err.Error())
 		return
@@ -60,15 +61,13 @@ func (gc GinControllerAdapter) UpdateBook(c *gin.Context) {
 }
 
 func (gc GinControllerAdapter) DeleteBook(c *gin.Context) {
-	request := Request{
-		pathVariables: map[string]string{
-			"id": c.Param("id"),
-		},
-		body: nil,
+	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	if err != nil {
+		c.String(http.StatusInternalServerError, err.Error())
+		return
 	}
 
-	err := gc.Controller.DeleteBook(request)
-	if err != nil {
+	if err := gc.Controller.DeleteBook(id); err != nil {
 		c.String(http.StatusInternalServerError, err.Error())
 		return
 	}

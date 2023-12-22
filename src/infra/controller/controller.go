@@ -1,19 +1,9 @@
 package controller
 
 import (
-	"encoding/json"
-	"strconv"
-
 	"github.com/rogeriofbrito/go-cleanarch-api/src/core/domain"
 	"github.com/rogeriofbrito/go-cleanarch-api/src/core/usecase"
 )
-
-type Request struct {
-	pathVariables map[string]string
-	params        map[string]string
-	headers       map[string]string
-	body          []byte
-}
 
 type BookModel struct {
 	Id    int64  `json:"id"`
@@ -28,20 +18,14 @@ type Controller struct {
 	Db usecase.DeleteBookUseCase
 }
 
-func (bc Controller) CreateBook(request Request) (BookModel, error) {
-	bm := new(BookModel)
-	err := json.Unmarshal(request.body, &bm)
-	if err != nil {
-		return BookModel{}, err
-	}
-
+func (bc Controller) CreateBook(bm BookModel) (BookModel, error) {
 	bd := domain.BookDomain{
 		Id:    bm.Id,
 		Title: bm.Title,
 		Pages: bm.Pages,
 	}
 
-	bd, err = bc.Cb.Execute(bd)
+	bd, err := bc.Cb.Execute(bd)
 	if err != nil {
 		return BookModel{}, err
 	}
@@ -53,12 +37,7 @@ func (bc Controller) CreateBook(request Request) (BookModel, error) {
 	}, nil
 }
 
-func (bc Controller) GetBook(request Request) (BookModel, error) {
-	id, err := strconv.ParseInt(request.pathVariables["id"], 10, 64)
-	if err != nil {
-		return BookModel{}, err
-	}
-
+func (bc Controller) GetBook(id int64) (BookModel, error) {
 	bd, err := bc.Gb.Execute(id)
 	if err != nil {
 		return BookModel{}, err
@@ -71,20 +50,14 @@ func (bc Controller) GetBook(request Request) (BookModel, error) {
 	}, nil
 }
 
-func (bc Controller) UpdateBook(request Request) (BookModel, error) {
-	bm := new(BookModel)
-	err := json.Unmarshal(request.body, &bm)
-	if err != nil {
-		return BookModel{}, err
-	}
-
+func (bc Controller) UpdateBook(bm BookModel) (BookModel, error) {
 	bd := domain.BookDomain{
 		Id:    bm.Id,
 		Title: bm.Title,
 		Pages: bm.Pages,
 	}
 
-	bd, err = bc.Ub.Execute(bd)
+	bd, err := bc.Ub.Execute(bd)
 	if err != nil {
 		return BookModel{}, err
 	}
@@ -96,12 +69,7 @@ func (bc Controller) UpdateBook(request Request) (BookModel, error) {
 	}, nil
 }
 
-func (bc Controller) DeleteBook(request Request) error {
-	id, err := strconv.ParseInt(request.pathVariables["id"], 10, 64)
-	if err != nil {
-		return err
-	}
-
+func (bc Controller) DeleteBook(id int64) error {
 	if err := bc.Db.Execute(id); err != nil {
 		return err
 	}
